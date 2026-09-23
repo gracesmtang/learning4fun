@@ -19,23 +19,14 @@
         --shadow: rgba(0, 0, 0, 0.08);
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
+      * { box-sizing: border-box; }
       body {
         margin: 0;
         font-family: Arial, sans-serif;
         background: linear-gradient(135deg, var(--bg1), var(--bg2));
         color: var(--text);
       }
-
-      .container {
-        max-width: 980px;
-        margin: 50px auto;
-        padding: 28px 20px 40px;
-      }
-
+      .container { max-width: 1100px; margin: 50px auto; padding: 28px 20px 40px; }
       .hero {
         background: linear-gradient(135deg, #fff9f4, #fff1e7);
         border: 1px solid var(--border);
@@ -43,141 +34,31 @@
         box-shadow: 0 12px 30px var(--shadow);
         padding: 28px 24px;
       }
-
-      h1 {
-        margin: 0;
-        font-size: clamp(2rem, 4vw, 3rem);
-        text-align: center;
-        color: var(--primary-dark);
-      }
-
-      .subtitle {
-        text-align: center;
-        margin-top: 10px;
-        color: var(--muted);
-        font-size: 1.05rem;
-      }
-
-      .controls {
-        margin-top: 26px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        justify-content: center;
-        align-items: center;
-      }
-
-      label {
-        font-weight: 700;
-        font-size: 1rem;
-      }
-
-      input {
-        width: 170px;
-        padding: 12px 14px;
-        border-radius: 10px;
-        border: 1px solid #d9c2b0;
-        font-size: 1rem;
-      }
-
-      button {
-        background: var(--primary);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 12px 22px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: transform 0.15s ease, background 0.2s ease;
-      }
-
-      button:hover {
-        background: var(--primary-dark);
-        transform: translateY(-1px);
-      }
-
-      .results {
-        margin-top: 24px;
-        background: var(--soft);
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        padding: 22px;
-      }
-
-      .results-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 16px;
-        flex-wrap: wrap;
-        margin-bottom: 18px;
-      }
-
-      .results-header h2 {
-        margin: 0;
-        font-size: clamp(1.5rem, 2vw, 2rem);
-      }
-
-      .age-badge {
-        padding: 8px 14px;
-        border-radius: 999px;
-        background: var(--secondary);
-        border: 1px solid #efc86d;
-        font-weight: 700;
-        color: #5b4a2b;
-      }
-
-      .cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 18px;
-      }
-
-      .card {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 18px;
-        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.03);
-      }
-
-      .icon {
-        font-size: 2rem;
-        margin-bottom: 10px;
-        display: inline-block;
-      }
-
-      .card h3 {
-        margin: 0 0 10px;
-        color: var(--primary-dark);
-        font-size: 1.12rem;
-      }
-
-      .card p {
-        margin: 0;
-        line-height: 1.6;
-        color: var(--text);
-      }
-
-      .empty {
-        color: var(--muted);
-        font-style: italic;
-        font-size: 1rem;
-      }
-
+      h1 { margin: 0; font-size: clamp(2rem, 4vw, 3rem); text-align: center; color: var(--primary-dark); }
+      .subtitle { text-align: center; margin-top: 10px; color: var(--muted); font-size: 1.05rem; }
+      .controls { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: center; }
+      label { font-weight: 700; font-size: 1rem; }
+      input { width: 170px; padding: 12px 14px; border-radius: 10px; border: 1px solid #d9c2b0; font-size: 1rem; }
+      button { background: var(--primary); color: white; border: none; border-radius: 10px; padding: 12px 22px; font-size: 1rem; cursor: pointer; transition: transform .15s ease, background .2s ease; }
+      button:hover { background: var(--primary-dark); transform: translateY(-1px); }
+      .results { margin-top: 24px; background: var(--soft); border: 1px solid var(--border); border-radius: 18px; padding: 22px; }
+      .results-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+      .results-header h2 { margin: 0; font-size: clamp(1.5rem, 2vw, 2rem); }
+      .age-badge { padding: 8px 14px; border-radius: 999px; background: var(--secondary); border: 1px solid #efc86d; font-weight: 700; color: #5b4a2b; }
+      .category { margin-top: 26px; }
+      .category:first-child { margin-top: 0; }
+      .category-title { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; color: var(--primary-dark); font-size: 1.35rem; }
+      .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+      .card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 18px; box-shadow: 0 8px 18px rgba(0,0,0,.03); }
+      .icon { font-size: 2rem; margin-bottom: 10px; display: inline-block; }
+      .card h3 { margin: 0 0 10px; color: var(--primary-dark); font-size: 1.12rem; }
+      .card p { margin: 0; line-height: 1.6; color: var(--text); }
+      .safety { margin-top: 24px; padding: 14px 16px; background: #fff8dc; border: 1px solid #efd98d; border-radius: 12px; line-height: 1.5; color: #604f20; }
+      .empty { color: var(--muted); font-style: italic; font-size: 1rem; }
       @media (max-width: 600px) {
-        .container {
-          margin: 20px 12px;
-        }
-
-        .controls {
-          flex-direction: column;
-        }
-
-        input,
-        button {
-          width: 100%;
-        }
+        .container { margin: 20px 12px; }
+        .controls { flex-direction: column; }
+        input, button { width: 100%; }
       }
     </style>
   </head>
@@ -185,10 +66,7 @@
     <div class="container">
       <div class="hero">
         <h1>Infant Play Guide</h1>
-        <div class="subtitle">
-          Enter your baby's birthday to get age-appropriate play ideas based on the current date
-        </div>
-
+        <div class="subtitle">Enter your baby's birthday to get age-appropriate play ideas based on the current date</div>
         <div class="controls">
           <label for="birthday">Baby's birthday:</label>
           <input id="birthday" type="date" />
@@ -201,155 +79,118 @@
           <h2>Suggested Activities</h2>
           <div id="ageBadge" class="age-badge">Any age</div>
         </div>
-
-        <div id="cards" class="cards">
+        <div id="cards">
           <div class="empty">No activities yet. Enter your baby’s birthday to get suggestions.</div>
         </div>
+        <div class="safety"><strong>Safety reminder:</strong> Always supervise play. Keep small objects, paper, bubbles, and scents away from the mouth and eyes. Stop any activity if your baby seems uncomfortable.</div>
       </div>
     </div>
 
     <script>
       const activities = {
-        0: [
-          {
-            icon: "😊",
-            title: "Face-to-Face Smiles",
-            description:
-              "Hold your baby close, smile, and talk softly. This supports bonding, eye contact, and early social communication."
-          },
-          {
-            icon: "🎵",
-            title: "Soft Music Time",
-            description:
-              "Play lullabies or hum gently. Rhythm and soothing sound help calm your baby and encourage listening."
-          },
-          {
-            icon: "🧸",
-            title: "Tummy Time with a Mirror",
-            description:
-              "Use a safe mirror or your face during tummy time to strengthen neck and shoulder muscles."
-          }
-        ],
-        3: [
-          {
-            icon: "🧸",
-            title: "Tummy Time with Toys",
-            description:
-              "Place bright toys in front of your baby during tummy time. This helps with head control and visual tracking."
-          },
-          {
-            icon: "🔔",
-            title: "Rattle Play",
-            description:
-              "Shake a soft rattle near one side of your baby to encourage turning toward sounds and strengthening listening skills."
-          },
-          {
-            icon: "👀",
-            title: "Social Coos and Faces",
-            description:
-              "Smile, mimic sounds, and respond to baby coos. This builds communication and emotional connection."
-          }
-        ],
-        6: [
-          {
-            icon: "🙈",
-            title: "Peek-a-Boo",
-            description:
-              "Cover your face, then reveal it with a smile. This supports social play, anticipation, and early understanding of object permanence."
-          },
-          {
-            icon: "🧣",
-            title: "Texture Exploration",
-            description:
-              "Let your baby touch soft fabric, satin, or textured cloths. This develops sensory awareness and tactile learning."
-          },
-          {
-            icon: "⚽",
-            title: "Soft Ball Roll",
-            description:
-              "Roll a soft ball between you and your baby. The effort of reaching and tracking helps coordination and attention."
-          }
-        ],
-        9: [
-          {
-            icon: "🧱",
-            title: "Stacking Soft Blocks",
-            description:
-              "Offer soft blocks or cups to stack and knock down. This supports hand-eye coordination and problem solving."
-          },
-          {
-            icon: "🎶",
-            title: "Clapping to Music",
-            description:
-              "Sing songs and clap with your baby. Rhythm builds coordination and encourages movement and listening."
-          },
-          {
-            icon: "🧩",
-            title: "Crawling Toy Chase",
-            description:
-              "Place a favorite toy just out of reach to encourage crawling and exploration."
-          }
-        ],
-        12: [
-          {
-            icon: "🕵️",
-            title: "Hide-and-Seek with Objects",
-            description:
-              "Hide a toy under a cloth or behind a pillow and let your baby find it. This supports object recognition and early thinking skills."
-          },
-          {
-            icon: "📚",
-            title: "Picture Book Time",
-            description:
-              "Point to pictures and name simple objects. This helps build vocabulary and attention span."
-          },
-          {
-            icon: "💃",
-            title: "Nursery Rhyme Movement",
-            description:
-              "Dance gently and clap along to nursery rhymes. Music and movement improve rhythm and coordination."
-          }
-        ],
-        18: [
-          {
-            icon: "🎲",
-            title: "Sorting Colors and Shapes",
-            description:
-              "Use large blocks or sorting toys to group by color or size. This builds early thinking, attention, and fine motor skills."
-          },
-          {
-            icon: "🚲",
-            title: "Push-and-Pull Toy Play",
-            description:
-              "Use a walker or push toy to encourage standing, stepping, and mobility confidence."
-          },
-          {
-            icon: "🍼",
-            title: "Pretend Play Feeding",
-            description:
-              "Role-play with a stuffed animal or doll and a cup or spoon. This develops imagination and social understanding."
-          }
-        ],
-        24: [
-          {
-            icon: "🧩",
-            title: "Shape Sorting Games",
-            description:
-              "Use large shape sorters or simple puzzles for persistence, problem-solving, and hand control."
-          },
-          {
-            icon: "📦",
-            title: "Follow Simple Instructions",
-            description:
-              "Give fun commands such as 'find the ball' or 'bring me the book.' This supports listening and communication."
-          },
-          {
-            icon: "⚽",
-            title: "Ball Games",
-            description:
-              "Kick, roll, or throw a soft ball together. This improves coordination, balance, and active play."
-          }
-        ]
+        0: {
+          label: "🌱 General bonding",
+          items: [
+            { icon: "😊", title: "Face-to-Face Smiles", description: "Hold your baby close, smile, and talk softly. This supports bonding, eye contact, and early social communication." },
+            { icon: "🎵", title: "Soft Music Time", description: "Play lullabies or hum gently. Rhythm and soothing sound help calm your baby and encourage listening." },
+            { icon: "🧸", title: "Tummy Time with a Mirror", description: "Use a safe mirror or your face during tummy time to strengthen neck and shoulder muscles." }
+          ]
+        },
+        2: {
+          label: "🍼 Month 2 play plan",
+          categories: [
+            {
+              name: "🧠 Cognitive · 認知",
+              items: [
+                { icon: "🪞", title: "Mirror Recognition · 鏡子認識初探", description: "Hold your baby safely near a mirror and say, “Who is that? It’s you!” Encourage eye contact and gentle smiling." },
+                { icon: "🐄", title: "Three Animal Sounds · 動物三聲音", description: "Make three simple sounds—cow moo, cat meow, and dog woof—repeating each a few times." },
+                { icon: "🍎", title: "Red Apple Card Match · 紅蘋果卡配物", description: "Show a red apple card beside a real apple and say, “Same! Red!” Keep the object large and supervised." },
+                { icon: "🔔", title: "Rattle Disappears · 鈴聲再現", description: "Shake a rattle, hide it briefly, ask “Where?”, then reveal it and say, “Here it is!”" },
+                { icon: "🤲", title: "Cause-and-Effect Rattle · 因果鈴遞手", description: "Shake the rattle for your baby to hear, then offer it so they can try holding or shaking it." },
+                { icon: "👨‍👩‍👧", title: "Family Photo Connection · 家庭相關係", description: "Point to a family photo and name people, such as “Daddy loves you.”" },
+                { icon: "👶", title: "Body Parts · 身部位升級", description: "Gently touch and name body parts: head, shoulders, tummy, hands, and feet." }
+              ]
+            },
+            {
+              name: "👁 Sensory · 感官刺激",
+              items: [
+                { icon: "🤸", title: "Tummy Time 15 Minutes · TT 15計", description: "Offer supervised tummy time on a firm mat in short, comfortable periods that total about 15 minutes. Lie facing your baby to encourage them." },
+                { icon: "🍃", title: "Balcony Breeze · 陽台微風感受", description: "With your baby held securely, feel a gentle breeze and say, “Cool! Breezy! Fresh!” Avoid direct sun and strong wind." },
+                { icon: "💦", title: "Bath Splash Kicks · 洗踢水濺水", description: "During a closely supervised bath, let your baby gently kick the water and say, “Kick! Splash!”" },
+                { icon: "🧸", title: "Hard, Soft, Rough Textures · 硬軟三質感", description: "Briefly present a large hard block, soft plush toy, and textured cloth for touch comparison. Do not let your baby mouth unsafe items." },
+                { icon: "🍊", title: "Orange and Mint Scents · 橙皮薄荷香", description: "Keep orange peel or mint near—not touching—the baby’s nose for about three seconds. Stop if there is any discomfort and avoid strong scents." },
+                { icon: "🥁", title: "Beat Tapping · 音節拍敲", description: "Hold your baby’s hand gently and tap a table softly to music, saying, “Tap, tap, tap!”" },
+                { icon: "🌿", title: "Grass Foot Feel · 園草地腳踩", description: "While holding your baby securely, briefly let bare feet feel clean grass and describe it as soft or tickly." }
+              ]
+            },
+            {
+              name: "❤️ Emotional & Social · 情緒社交",
+              items: [
+                { icon: "👏", title: "Clap Song · 拍手歌遊戲", description: "Gently hold your baby’s hands and clap together while singing a short clapping song." },
+                { icon: "🌟", title: "Praise Head Lifts · 讚賞抬頭嘗試", description: "When your baby lifts their head during tummy time, smile and say, “You did it! Amazing!”" },
+                { icon: "🤗", title: "Comfort First · 先說再抱安", description: "When your baby cries, calmly say, “Mama understands,” then provide a comforting cuddle." },
+                { icon: "😄", title: "Preference Test · 社交喜好測試", description: "Try three gentle engagement styles—singing, smiling, and talking—and notice which gets the biggest response." },
+                { icon: "🔁", title: "Imitation Game · 模仿遊戲開始", description: "If your baby pats or makes a sound, copy it gently. This teaches turn-taking and connection." },
+                { icon: "🙂", title: "Name Mirror Emotions · 鏡緒命名", description: "In a mirror, make gentle happy, surprised, and calm expressions and name each feeling." },
+                { icon: "🎼", title: "Family Sing-Along · 全家大合唱", description: "Invite family members to sing a favourite gentle song together." }
+              ]
+            },
+            {
+              name: "🏃 Gross Motor · 大肌肉",
+              items: [
+                { icon: "🔔", title: "Reach for Hanging Toy · 掛物伸手", description: "Place a safe toy above your baby’s chest, within comfortable reach, and encourage reaching. Never leave a hanging toy unattended." },
+                { icon: "🦵", title: "Supported Standing · 扶腋下腿踩站", description: "With full support under the arms, let your baby’s feet briefly touch your thighs for up to 15 seconds. Do not force standing." },
+                { icon: "↔️", title: "Roll Induction Left to Right · 翻身誘導", description: "Place your baby on their side and use a toy on the opposite side to encourage looking and gentle rolling. Stop if frustrated." },
+                { icon: "⚽", title: "Kick a Soft Ball · 踢掛軟球", description: "While your baby lies on their back, place a soft ball near the feet and encourage gentle kicking." },
+                { icon: "💪", title: "Elbow Prop · 俯臥雙肘撐", description: "During tummy time, encourage your baby to prop on both elbows for a few seconds with your close supervision." },
+                { icon: "🟠", title: "Slow Ball Side Roll · 大球左右慢動", description: "Only with confident adult support, place your baby prone on a large stable ball and make very slow side-to-side movements." },
+                { icon: "🚗", title: "Park Watch · 園看人看車", description: "Take a stroller walk and talk about people, children, and vehicles from a safe distance." }
+              ]
+            },
+            {
+              name: "✋ Fine Motor · 細肌肉",
+              items: [
+                { icon: "🔔", title: "Two Rattles · 雙手各握鈴", description: "Offer one lightweight, baby-safe rattle at a time to each hand and observe whether your baby holds or moves both." },
+                { icon: "🤲", title: "Hand Transfer · 玩具左至右換手", description: "Place a safe toy in the left hand, wait, and gently encourage your baby to explore moving it toward the right hand." },
+                { icon: "👃", title: "Point to Face · 食指點鼻眼", description: "With your guidance, gently touch and name nose, eyes, and mouth. Never poke or put fingers near the eyes." },
+                { icon: "🔊", title: "Animal Sound Button · 聲動物按鈕", description: "Use a large, safe sound book or button and name the animal each time it sounds, such as “Dog! Dog!”" },
+                { icon: "📄", title: "Tear Paper Introduction · 大紙撕開初探", description: "Let your baby explore tearing a large sheet of paper only with close supervision; remove every piece immediately." },
+                { icon: "🫧", title: "Pop Palm Bubbles · 手掌泡泡戳破", description: "Blow bubbles toward an adult-held palm so your baby can watch or touch them. Keep bubbles away from eyes and mouth." },
+                { icon: "👏", title: "Family Clap Relay · 家庭接力拍手", description: "Take turns clapping—dad, mum, grandparent—and invite your baby to watch and imitate." }
+              ]
+            }
+          ]
+        },
+        3: { label: "🌱 3 month activities", items: [
+          { icon: "🧸", title: "Tummy Time with Toys", description: "Place bright toys in front of your baby during tummy time. This helps with head control and visual tracking." },
+          { icon: "🔔", title: "Rattle Play", description: "Shake a soft rattle near one side of your baby to encourage turning toward sounds." },
+          { icon: "👀", title: "Social Coos and Faces", description: "Smile, mimic sounds, and respond to baby coos to build communication and connection." }
+        ] },
+        6: { label: "🌱 6 month activities", items: [
+          { icon: "🙈", title: "Peek-a-Boo", description: "Cover your face, then reveal it with a smile to support social play and anticipation." },
+          { icon: "🧣", title: "Texture Exploration", description: "Let your baby touch soft and textured cloths to develop sensory awareness." },
+          { icon: "⚽", title: "Soft Ball Roll", description: "Roll a soft ball between you and your baby to encourage tracking and reaching." }
+        ] },
+        9: { label: "🌱 9 month activities", items: [
+          { icon: "🧱", title: "Stacking Soft Blocks", description: "Offer soft blocks or cups to stack and knock down, supporting coordination and problem solving." },
+          { icon: "🎶", title: "Clapping to Music", description: "Sing songs and clap with your baby to encourage rhythm and movement." },
+          { icon: "🧩", title: "Crawling Toy Chase", description: "Place a favourite toy just out of reach to encourage crawling and exploration." }
+        ] },
+        12: { label: "🌱 12 month activities", items: [
+          { icon: "🕵️", title: "Hide-and-Seek with Objects", description: "Hide a toy under a cloth and let your baby find it to support early thinking skills." },
+          { icon: "📚", title: "Picture Book Time", description: "Point to pictures and name simple objects to build vocabulary and attention." },
+          { icon: "💃", title: "Nursery Rhyme Movement", description: "Dance gently and clap along to nursery rhymes to improve rhythm and coordination." }
+        ] },
+        18: { label: "🌱 18 month activities", items: [
+          { icon: "🎲", title: "Sorting Colors and Shapes", description: "Use large blocks or sorting toys to build early thinking and fine motor skills." },
+          { icon: "🚲", title: "Push-and-Pull Toy Play", description: "Use a push toy to encourage standing, stepping, and mobility confidence." },
+          { icon: "🍼", title: "Pretend Play Feeding", description: "Role-play with a stuffed animal or doll to develop imagination and social understanding." }
+        ] },
+        24: { label: "🌱 24 month activities", items: [
+          { icon: "🧩", title: "Shape Sorting Games", description: "Use large shape sorters or simple puzzles for problem-solving and hand control." },
+          { icon: "📦", title: "Follow Simple Instructions", description: "Give fun commands such as “find the ball” to support listening and communication." },
+          { icon: "⚽", title: "Ball Games", description: "Kick, roll, or throw a soft ball together to improve coordination and balance." }
+        ] }
       };
 
       const cards = document.getElementById("cards");
@@ -359,113 +200,65 @@
 
       function getTodayAsDateString() {
         const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, "0");
-        const day = String(today.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
+        return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
       }
 
       function calculateAgeInMonths(birthday) {
         const birthDate = new Date(`${birthday}T00:00:00`);
         const today = new Date();
-
-        let months =
-          (today.getFullYear() - birthDate.getFullYear()) * 12 +
-          (today.getMonth() - birthDate.getMonth());
-
-        if (today.getDate() < birthDate.getDate()) {
-          months--;
-        }
-
-        return months;
+        let months = (today.getFullYear() - birthDate.getFullYear()) * 12 + today.getMonth() - birthDate.getMonth();
+        if (today.getDate() < birthDate.getDate()) months--;
+        return Math.max(0, months);
       }
 
       function formatBirthday(birthday) {
-        const date = new Date(`${birthday}T00:00:00`);
-
-        return date.toLocaleDateString(undefined, {
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        });
+        return new Date(`${birthday}T00:00:00`).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
       }
 
-      function displayActivities(list, labelText) {
-        cards.innerHTML = "";
-
-        if (!list || list.length === 0) {
-          cards.innerHTML = '<div class="empty">No activities available for this age.</div>';
-          return;
-        }
-
+      function renderCards(list) {
+        const grid = document.createElement("div");
+        grid.className = "cards";
         list.forEach((item) => {
           const card = document.createElement("div");
           card.className = "card";
-
-          const icon = document.createElement("div");
-          icon.className = "icon";
-          icon.textContent = item.icon || "✨";
-
-          const title = document.createElement("h3");
-          title.textContent = item.title;
-
-          const text = document.createElement("p");
-          text.textContent = item.description;
-
-          card.appendChild(icon);
-          card.appendChild(title);
-          card.appendChild(text);
-          cards.appendChild(card);
+          card.innerHTML = `<div class="icon">${item.icon || "✨"}</div><h3></h3><p></p>`;
+          card.querySelector("h3").textContent = item.title;
+          card.querySelector("p").textContent = item.description;
+          grid.appendChild(card);
         });
+        return grid;
+      }
 
+      function displayActivities(plan, labelText) {
+        cards.innerHTML = "";
         ageBadge.textContent = labelText;
+        if (plan.categories) {
+          plan.categories.forEach((category) => {
+            const section = document.createElement("section");
+            section.className = "category";
+            const heading = document.createElement("h3");
+            heading.className = "category-title";
+            heading.textContent = category.name;
+            section.appendChild(heading);
+            section.appendChild(renderCards(category.items));
+            cards.appendChild(section);
+          });
+        } else {
+          cards.appendChild(renderCards(plan.items));
+        }
       }
 
       function getActivitiesForAge(month) {
-        const cleaned = Number(month);
-
-        if (!Number.isInteger(cleaned) || cleaned < 0) {
-          return {
-            items: [
-              {
-                icon: "⚠️",
-                title: "Please enter a valid age",
-                description: "Use a whole number in months, such as 6, 9, or 12."
-              }
-            ],
-            label: "Invalid age"
-          };
-        }
-
-        if (activities[cleaned]) {
-          return {
-            items: activities[cleaned],
-            label: `${cleaned} months`
-          };
-        }
-
         const keys = Object.keys(activities).map(Number).sort((a, b) => a - b);
         let bestMatch = keys[0];
-
-        for (const age of keys) {
-          if (age <= cleaned) {
-            bestMatch = age;
-          } else {
-            break;
-          }
-        }
-
-        return {
-          items: activities[bestMatch],
-          label: `${cleaned} months (closest match: ${bestMatch})`
-        };
+        keys.forEach((key) => { if (key <= month) bestMatch = key; });
+        return activities[bestMatch];
       }
 
       birthdayInput.max = getTodayAsDateString();
 
       submitBtn.addEventListener("click", () => {
         const birthday = birthdayInput.value;
-
         if (!birthday) {
           cards.innerHTML = '<div class="empty">Please enter your baby’s birthday first.</div>';
           ageBadge.textContent = "Birthday required";
@@ -474,7 +267,6 @@
 
         const birthDate = new Date(`${birthday}T00:00:00`);
         const today = new Date();
-
         if (birthDate > today) {
           cards.innerHTML = '<div class="empty">The birthday cannot be in the future.</div>';
           ageBadge.textContent = "Invalid birthday";
@@ -482,18 +274,12 @@
         }
 
         const ageInMonths = calculateAgeInMonths(birthday);
-        const formattedBirthday = formatBirthday(birthday);
-        const result = getActivitiesForAge(ageInMonths);
-
-        displayActivities(result.items, `${ageInMonths} months old`);
-
-        ageBadge.textContent = `${formattedBirthday} · ${ageInMonths} completed month${ageInMonths === 1 ? "" : "s"}`;
+        const plan = getActivitiesForAge(ageInMonths);
+        displayActivities(plan, `${formatBirthday(birthday)} · ${ageInMonths} completed month${ageInMonths === 1 ? "" : "s"}`);
       });
 
       birthdayInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-          submitBtn.click();
-        }
+        if (event.key === "Enter") submitBtn.click();
       });
     </script>
   </body>
