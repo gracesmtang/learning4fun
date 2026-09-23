@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infant Activity Ideas</title>
+    <style>
+      :root {
+        --bg: #fffaf3;
+        --card: #ffffff;
+        --primary: #ff8a65;
+        --primary-dark: #f06243;
+        --text: #2d2d2d;
+        --muted: #666666;
+        --border: #f1d9c4;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #fffaf3, #fff3ea);
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 700px;
+        margin: 60px auto;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        padding: 32px 24px;
+      }
+
+      h1 {
+        margin-top: 0;
+        color: var(--primary-dark);
+        text-align: center;
+      }
+
+      form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+        margin: 24px 0;
+      }
+
+      label {
+        font-weight: 600;
+      }
+
+      input {
+        padding: 10px 12px;
+        font-size: 16px;
+        border: 1px solid #d8c6b7;
+        border-radius: 8px;
+        width: 150px;
+      }
+
+      button {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 11px 18px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      button:hover {
+        background: var(--primary-dark);
+      }
+
+      h2 {
+        margin-top: 28px;
+        color: var(--text);
+      }
+
+      ul {
+        padding-left: 20px;
+        line-height: 1.8;
+        font-size: 1.05rem;
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      .empty {
+        color: var(--muted);
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Infant Activity Ideas</h1>
+
+      <form id="activityForm">
+        <label for="age">Enter infant age (months):</label>
+        <input
+          id="age"
+          type="number"
+          min="0"
+          max="24"
+          placeholder="e.g. 6"
+          required
+        />
+        <button type="submit">Get Activities</button>
+      </form>
+
+      <h2>Suggested Activities:</h2>
+      <ul id="suggestions">
+        <li class="empty">No activities yet. Enter an age to get suggestions.</li>
+      </ul>
+    </div>
+
+    <script>
+      const activities = {
+        3: [
+          "Tummy time with colorful toys",
+          "Gentle rattles for sound exploration",
+          "Smiling and cooing face-to-face"
+        ],
+        6: [
+          "Peek-a-boo games",
+          "Exploring textured fabrics",
+          "Rolling a soft ball back and forth"
+        ],
+        9: [
+          "Stacking soft blocks",
+          "Clapping hands to music",
+          "Crawling chase with a toy"
+        ],
+        12: [
+          "Simple hide-and-seek with objects",
+          "Pointing at picture books",
+          "Dancing to nursery rhymes"
+        ]
+      };
+
+      const form = document.getElementById("activityForm");
+      const ageInput = document.getElementById("age");
+      const suggestionsList = document.getElementById("suggestions");
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const month = parseInt(ageInput.value, 10);
+
+        if (!Number.isInteger(month)) {
+          showSuggestions(["Please enter a valid age in months."]);
+          return;
+        }
+
+        if (activities[month]) {
+          showSuggestions(activities[month]);
+        } else {
+          showSuggestions(["No activities found for this age."]);
+        }
+      });
+
+      function showSuggestions(items) {
+        suggestionsList.innerHTML = "";
+        items.forEach((activity) => {
+          const li = document.createElement("li");
+          li.textContent = activity;
+          suggestionsList.appendChild(li);
+        });
+      }
+    </script>
+  </body>
+</html>
