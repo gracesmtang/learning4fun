@@ -1,107 +1,683 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Infant Play Guide</title>
-  <style>
-    :root{--bg1:#fffaf2;--bg2:#ffeae2;--primary:#f2654f;--soft:#fff3ea;--border:#f2d7c5;--text:#2e2e2e;--muted:#666;--gold:#ffd88a;--gold-border:#efc86d}
-    *{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--text)}
-    .container{max-width:1100px;margin:40px auto;padding:20px}.hero,.results{background:#fff;border:1px solid var(--border);border-radius:20px;box-shadow:0 12px 30px rgba(0,0,0,.08);padding:28px 24px}
-    h1{margin:0;text-align:center;color:var(--primary);font-size:clamp(2rem,4vw,3rem)}.subtitle{text-align:center;color:var(--muted);margin:10px 0 22px;font-size:1.05rem}
-    .current-age{text-align:center;background:#fff3c9;border:1px solid var(--gold-border);border-radius:14px;padding:16px;font-size:1.2rem;font-weight:bold;color:#5b4a2b}.current-age small{display:block;margin-top:6px;font-size:.9rem;font-weight:normal}
-    .results{margin-top:24px;background:var(--soft);box-shadow:none}.results-header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px}h2{margin:0;font-size:clamp(1.5rem,2vw,2rem)}.age-badge{padding:8px 14px;border-radius:999px;background:var(--gold);border:1px solid var(--gold-border);font-weight:bold;color:#5b4a2b}
-    .selector-wrap{margin-top:18px;padding:16px;background:#fff;border:1px solid var(--border);border-radius:14px}.selector-wrap label{font-weight:700;display:block;margin-bottom:12px}.selector-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.select-box{padding:10px 12px;border:1px solid #d9c2b0;border-radius:10px;font-size:1rem;min-width:200px}.action-btn{padding:11px 18px;border:none;border-radius:10px;background:var(--primary);color:#fff;font-size:1rem;cursor:pointer} .action-btn:hover{background:#de584a}
-    .category{margin-top:26px}.category:first-child{margin-top:0}.category-title{color:var(--primary);margin:0 0 12px;font-size:1.35rem}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 8px 18px rgba(0,0,0,.03)}.icon{font-size:2rem;margin-bottom:10px}.card h3{margin:0 0 10px;color:var(--primary);font-size:1.1rem}.card p{margin:0;line-height:1.6}.safety{margin-top:24px;padding:14px 16px;background:#fff8dc;border:1px solid #efd98d;border-radius:12px;line-height:1.5;color:#604f20}@media(max-width:600px){.container{margin:15px 8px;padding:10px}.hero,.results{padding:22px 16px}.selector-row{display:block}.select-box,.action-btn{width:100%}}
-  </style>
-</head>
-<body>
-  <main class="container">
-    <section class="hero">
-      <h1>Infant Play Guide</h1>
-      <p class="subtitle">Age-appropriate play ideas for Baby S</p>
-      <div id="currentAge" class="current-age"></div>
-    </section>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infant Play Guide</title>
+    <style>
+      :root {
+        --bg1: #fffaf2;
+        --bg2: #ffeae2;
+        --card: #ffffff;
+        --primary: #f2654f;
+        --secondary: #ffd88a;
+        --text: #2e2e2e;
+        --muted: #666666;
+        --soft: #fff3ea;
+        --border: #f2d7c5;
+        --shadow: rgba(0, 0, 0, 0.08);
+      }
 
-    <section class="results">
-      <div class="results-header">
-        <h2>Suggested Activities</h2>
-        <div id="ageBadge" class="age-badge"></div>
-      </div>
+      * { box-sizing: border-box; }
 
-      <div id="activities"></div>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, var(--bg1), var(--bg2));
+        color: var(--text);
+      }
 
-      <div class="selector-wrap">
-        <label for="futureMonth">View upcoming month:</label>
-        <div class="selector-row">
-          <select id="futureMonth" class="select-box"></select>
-          <button id="showMonthBtn" class="action-btn" type="button">Show Selected Month</button>
+      .container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 20px;
+      }
+
+      .hero,
+      .results {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: 0 12px 30px var(--shadow);
+        padding: 28px 24px;
+      }
+
+      h1 {
+        margin: 0;
+        text-align: center;
+        color: var(--primary);
+        font-size: clamp(2rem, 4vw, 3rem);
+      }
+
+      .subtitle {
+        text-align: center;
+        color: var(--muted);
+        margin: 10px 0 22px;
+        font-size: 1.05rem;
+      }
+
+      .current-age {
+        text-align: center;
+        background: #fff3c9;
+        border: 1px solid #efc86d;
+        border-radius: 14px;
+        padding: 16px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #5b4a2b;
+      }
+
+      .current-age small {
+        display: block;
+        margin-top: 6px;
+        font-size: 0.9rem;
+        font-weight: 400;
+      }
+
+      .results {
+        margin-top: 24px;
+        background: var(--soft);
+        box-shadow: none;
+      }
+
+      .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+
+      .results-header h2 {
+        margin: 0;
+        font-size: clamp(1.5rem, 2vw, 2rem);
+      }
+
+      .age-badge {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: var(--secondary);
+        border: 1px solid #efc86d;
+        font-weight: 700;
+        color: #5b4a2b;
+      }
+
+      .selector-wrap {
+        margin-top: 18px;
+        padding: 16px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+      }
+
+      .selector-wrap label {
+        font-weight: 700;
+        display: block;
+        margin-bottom: 12px;
+      }
+
+      .selector-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      select,
+      button {
+        padding: 11px 12px;
+        border-radius: 10px;
+        font-size: 1rem;
+      }
+
+      select {
+        min-width: 220px;
+        border: 1px solid #d9c2b0;
+      }
+
+      button {
+        background: var(--primary);
+        color: white;
+        border: 0;
+        cursor: pointer;
+      }
+
+      .category {
+        margin-top: 26px;
+      }
+
+      .category:first-child {
+        margin-top: 0;
+      }
+
+      .category-title {
+        color: var(--primary);
+        margin: 0 0 12px;
+        font-size: 1.35rem;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.03);
+      }
+
+      .icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      .card h3 {
+        margin: 0 0 10px;
+        color: var(--primary);
+        font-size: 1.08rem;
+      }
+
+      .card p {
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      .safety {
+        margin-top: 24px;
+        padding: 14px;
+        background: #fff8dc;
+        border: 1px solid #efd98d;
+        border-radius: 12px;
+        line-height: 1.5;
+        color: #604f20;
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          margin: 15px 8px;
+          padding: 10px;
+        }
+
+        .hero,
+        .results {
+          padding: 22px 16px;
+        }
+
+        select,
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <section class="hero">
+        <h1>Infant Play Guide</h1>
+        <p class="subtitle">Age-appropriate play ideas for Baby S</p>
+        <div id="currentAge" class="current-age"></div>
+      </section>
+
+      <section class="results">
+        <div class="results-header">
+          <h2>Suggested Activities</h2>
+          <div id="ageBadge" class="age-badge"></div>
         </div>
-      </div>
 
-      <div class="safety"><strong>Safety reminder:</strong> Always supervise play. Keep small objects, paper, bubbles, and scents away from the mouth and eyes. Stop any activity if Baby S seems uncomfortable.</div>
-    </section>
-  </main>
+        <div id="activities"></div>
 
-  <script>
-    const BABY_BIRTHDAY = "2026-07-15";
+        <div class="selector-wrap">
+          <label for="futureMonth">View upcoming month:</label>
+          <div class="selector-row">
+            <select id="futureMonth"></select>
+            <button id="showMonthBtn" type="button">Show Selected Month</button>
+          </div>
+        </div>
 
-    const monthTwoCategories = [
-      {name:"🧠 Cognitive · 認知",items:[["🪞","Mirror Recognition · 鏡子認識初探","Hold Baby S safely near a mirror and say, 'Who is that? It’s you!' Encourage eye contact and gentle smiling."],["🐄","Three Animal Sounds · 動物三聲音","Make three simple sounds—cow moo, cat meow, and dog woof—repeating each a few times."],["🍎","Red Apple Card Match · 紅蘋果卡配物","Show a red apple card beside a real apple and say, 'Same! Red!' Keep the object large and supervised."],["🔔","Rattle Disappears · 鈴聲再現","Shake a rattle, hide it briefly, ask 'Where?', then reveal it and say, 'Here it is!'"],["🤲","Cause-and-Effect Rattle · 因果鈴遞手","Shake the rattle for Baby S to hear, then offer it so they can try holding or shaking it."],["👨‍👩‍👧","Family Photo Connection · 家庭關係","Point to a family photo and name people, such as 'Daddy loves you.'"],["👶","Body Parts · 身體部位","Gently touch and name body parts: head, shoulders, tummy, hands, and feet."]]},
-      {name:"👁 Sensory · 感官刺激",items:[["🤸","Tummy Time 15 Minutes · TT 15計","Offer supervised tummy time on a firm mat in short, comfortable periods that total about 15 minutes. Lie facing Baby S to encourage them."],["🍃","Balcony Breeze · 陽台微風感受","With Baby S held securely, feel a gentle breeze and say, 'Cool! Breezy! Fresh!' Avoid direct sun and strong wind."],["💦","Bath Splash Kicks · 洗踢水濺水","During a closely supervised bath, let Baby S gently kick the water and say, 'Kick! Splash!'"],["🧸","Hard, Soft, Rough Textures · 硬軟三質感","Briefly present a large hard block, soft plush toy, and textured cloth. Do not let Baby S mouth unsafe items."],["🍊","Orange and Mint Scents · 橙皮薄荷香","Keep orange peel or mint near—not touching—Baby S's nose for about three seconds. Stop if uncomfortable and avoid strong scents."],["🥁","Beat Tapping · 音節拍敲","Hold Baby S's hand gently and tap a table softly to music, saying, 'Tap, tap, tap!'"],["🌿","Grass Foot Feel · 草地腳踩","While holding Baby S securely, briefly let bare feet feel clean grass and describe it as soft or tickly."]]},
-      {name:"❤️ Emotional & Social · 情緒社交",items:[["👏","Clap Song · 拍手歌遊戲","Gently hold Baby S's hands and clap together while singing a short clapping song."],["🌟","Praise Head Lifts · 讚賞抬頭嘗試","When Baby S lifts their head during tummy time, smile and say, 'You did it! Amazing!'"],["🤗","Comfort First · 先說再抱安","When Baby S cries, calmly say, 'Mama understands,' then provide a comforting cuddle."],["😄","Preference Test · 社交喜好測試","Try three gentle engagement styles—singing, smiling, and talking—and notice which gets the biggest response."],["🔁","Imitation Game · 模仿遊戲開始","If Baby S pats or makes a sound, copy it gently. This teaches turn-taking and connection."],["🙂","Name Mirror Emotions · 鏡緒命名","In a mirror, make gentle happy, surprised, and calm expressions and name each feeling."],["🎼","Family Sing-Along · 全家大合唱","Invite family members to sing a favourite gentle song together."]]},
-      {name:"🏃 Gross Motor · 大肌肉",items:[["🔔","Reach for Hanging Toy · 掛物伸手","Place a safe toy above Baby S's chest, within comfortable reach, and encourage reaching. Never leave a hanging toy unattended."],["🦵","Supported Standing · 扶腋下腿踩站","With full support under the arms, let Baby S's feet briefly touch your thighs for up to 15 seconds. Do not force standing."],["↔️","Roll Induction · 翻身誘導","Place Baby S on their side and use a toy on the opposite side to encourage looking and gentle rolling. Stop if frustrated."],["⚽","Kick a Soft Ball · 踢軟球","While Baby S lies on their back, place a soft ball near the feet and encourage gentle kicking."],["💪","Elbow Prop · 俯臥雙肘撐","During tummy time, encourage Baby S to prop on both elbows for a few seconds with close supervision."],["🟠","Slow Ball Side Roll · 大球左右慢動","Only with confident adult support, place Baby S prone on a large stable ball and make very slow side-to-side movements."],["🚗","Park Watch · 園看人看車","Take a stroller walk and talk about people, children, and vehicles from a safe distance."]]},
-      {name:"✋ Fine Motor · 細肌肉",items:[["🔔","Two Rattles · 雙手各握鈴","Offer one lightweight, baby-safe rattle at a time to each hand and observe whether Baby S holds or moves both."],["🤲","Hand Transfer · 玩具左至右換手","Place a safe toy in the left hand, wait, and gently encourage Baby S to explore moving it toward the right hand."],["👃","Point to Face · 食指點鼻眼","With your guidance, gently touch and name nose, eyes, and mouth. Never poke or put fingers near the eyes."],["🔊","Animal Sound Button · 聲動物按鈕","Use a large, safe sound book or button and name the animal each time it sounds, such as 'Dog! Dog!'"],["📄","Tear Paper Introduction · 大紙撕開初探","Let Baby S explore tearing a large sheet of paper only with close supervision; remove every piece immediately."],["🫧","Pop Palm Bubbles · 手掌泡泡戳破","Blow bubbles toward an adult-held palm so Baby S can watch or touch them. Keep bubbles away from eyes and mouth."],["👏","Family Clap Relay · 家庭接力拍手","Take turns clapping—dad, mum, grandparent—and invite Baby S to watch and imitate."]]}
-    ];
+        <div class="safety">
+          <strong>Safety reminder:</strong> Always supervise play. Keep small objects,
+          paper, bubbles, and scents away from the mouth and eyes. Stop any activity if Baby S seems tired or uncomfortable.
+        </div>
+      </section>
+    </main>
 
-    const monthThreeCategories = [
-      {name:"🧠 Cognitive · 認知智力",items:[["🙈","Peekaboo with Both Hands · Peekaboo雙手遮臉","Cover your face for about two seconds and say, 'Gone!' Then reappear with 'Boo!' Repeat up to five times."],["🪟","Point and Name · 指窗燈桌命名","Point to a window, light, and table. Name each object three times."],["📖","Animal Book Sounds · 動物圖書聲音","Look at an animal book and say, 'Dog—woof! Cat—meow! Bird—tweet!'"],["🎁","Pop-up Toy · 因果彈出玩具","Press a safe button so an animal pops up. Make a surprised face and say, 'Out came!'"],["🥣","Big and Small Bowls · 大小碗比較","Show a large and small bowl and say, 'Big! Small!' three times each."],["🧣","Hide Under Cloth · 布下藏找掀布","Hide a large safe toy under a cloth, ask, 'Where did it go?', and let Baby S uncover it."],["👨‍👩‍👧","Family Photo Quiz · 家庭相片問答","Point to four family photos and ask, 'Where's daddy? Where's mummy?' Respond warmly to any look or gesture."]]},
-      {name:"👁 Sensory · 感官刺激",items:[["🌿","Barefoot Grass · 草地赤腳踩","At a clean park area, hold Baby S securely while bare feet briefly feel grass. Say, 'Soft! Cool! Tickly!'"],["🏖️","Shallow Sand Tray · 家用淺沙盤探索","Use a shallow tray with clean, child-safe sand for supervised finger exploration. Say, 'Sandy and rough!' Keep sand away from the mouth and eyes."],["💦","Water Kick · 水盤坐邊踢水","With constant support and supervision, let Baby S kick a very shallow basin of water and say, 'Cool! Splash!'"],["🎶","Compare Three Sounds · 三樂器比較聲音","Offer a rattle, wood block, and shaker one at a time. Make each sound five times and compare them."],["👜","Texture Bag · 感官布袋初探","Place a soft ball, large block, and plush item in a cloth bag. Guide Baby S's hands to explore; do not leave the bag unattended."],["🍂","Cinnamon and Vanilla · 肉桂香草廚房香","Keep cinnamon or vanilla nearby—but never touching skin—for about three seconds. Stop if uncomfortable and avoid strong scents."],["🌧️","After-Rain Park · 雨後公園泥土香","From a safe distance, notice the smell of damp soil and look at puddle reflections. Do not let Baby S touch dirty water."]]},
-      {name:"❤️ Emotional & Social · 情商社交",items:[["👋","Brief Separation · 短暫離視線5秒","Step briefly out of sight for about five seconds, return promptly, and say, 'Mama's back!' Only do this if Baby S is calm."],["🤝","Stranger Comfort · 陌生人安撫語","Around an unfamiliar person, stay close and say, 'It's okay, friendly person!' Never force interaction."],["😢","Emotion Mirror · 情緒鏡像回應","If Baby S cries, calmly say, 'Are you sad? Mama understands,' then comfort them."],["🎉","Rolling Celebration · 翻身全家慶祝","When Baby S rolls, smile and clap gently while saying, 'You rolled! So amazing!'"],["🪞","Mirror Self · 鏡前自我靚靚","Hold Baby S near a safe mirror and say, 'It's you! Beautiful baby!'"],["👏","If You're Happy · 如果開心就拍手","Sing the song and gently guide simple clapping actions without forcing movement."],["🙈","Family Peekaboo · 全家Peekaboo","Have family members take turns playing peekaboo with different large, safe objects."]]},
-      {name:"🏃 Gross Motor · 大肌肉",items:[["↪️","Complete Left-to-Right Roll · 左至右完整翻身","Place Baby S on the left side with a toy to the right. Wait and encourage a complete roll without pulling."],["↩️","Complete Right-to-Left Roll · 右至左完整翻身","Place Baby S on the right side with a toy to the left. Wait and encourage a complete roll without pulling."],["🪑","Supported Sit 60 Seconds · 扶坐60s頭平衡","Support Baby S at the waist in sitting for up to 60 seconds and observe head balance. Stop when tired."],["⚽","Kick Inflatable Ball · 仰臥踢大充氣球","While Baby S lies on their back, place a large soft inflatable ball near the feet and encourage kicking."],["🔄","Prone Pivot · 俯臥轉圈取物","During tummy time, place a safe toy to the side and encourage Baby S to pivot toward it."],["🧍","Supported Stand 30 Seconds · 扶站30s","Support Baby S under the arms for up to 30 seconds. Do not reduce support or force weight-bearing."],["🚶","Park with Varied Ages · 公園看不同年齡","Take a stroller walk and safely observe children of different ages playing nearby."]]},
-      {name:"✋ Fine Motor · 細肌肉",items:[["⚽","Two-Hand Ball · 雙手抓大軟球","Place a large soft ball between Baby S's hands and let fingers wrap around it with supervision."],["🤲","Hand Transfer · 玩具左至右換手","Place a toy in the left hand and gently encourage moving it toward the right hand."],["👃","Touch Face Parts · 食指點鼻眼嘴耳","With guidance, gently name and touch nose, eyes, mouth, and ears. Never poke near the eyes."],["🌙","Goodnight Moon · 晚安月亮睡前","Read a sturdy picture book and name one object on each page, such as moon and stars."],["✨","Twinkle Actions · 一閃小星星動作","Sing Twinkle Twinkle and demonstrate gentle finger movements for Baby S to watch."],["📦","Block Pour · 積木容器倒入","With large baby-safe blocks, move them from one wide container to another and say, 'In! Pour!'"],["🧶","Watch Craft · 媽媽手工觀看","Let Baby S watch and briefly touch only large, safe craft materials while you hold them. Keep tools, string, and scraps away."]]} 
-    ];
+    <script>
+      const BABY_BIRTHDAY = "2026-07-15";
 
-    const monthPlans = {
-      2: { label: "Month 2", categories: monthTwoCategories },
-      3: { label: "Month 3", categories: monthThreeCategories },
-      4: { label: "Month 4", categories: [{name:"🧠 Cognitive",items:[["🧩","Object permanence games","Hide a toy and gently encourage looking for it with large, easy-to-find objects."],["🔊","Name sounds and objects","Repeat key words like 'ball', 'dog', and 'book' while pointing to them."],["📷","Picture recognition","Look at family photos and name each person with warmth and repetition."]]},{name:"👁 Sensory",items:[["🧺","Sensory basket","Add large fabric squares, balls, and textured cloths for gentle exploring."],["💦","Bath play","Use a shallow basin and encourage splashing while staying supervised."],["🌼","Outdoor sound walk","Sit outside and notice wind, birds, and sunlight."]]},{name:"❤️ Emotional & Social",items:[["😄","Smile exchange","Pause and wait for Baby S to smile back, then celebrate."],["👋","Wave and clap","Use a simple wave and clap song to build social interaction."],["🤝","Hold and soothe","Respond with eye contact and warm touch when Baby S is upset."]]},{name:"🏃 Gross Motor",items:[["🧍","Supported standing","Hold under the arms and allow brief standing with weight on feet."],["🧿","Reach and grab","Place a safe toy in front and encourage grabbing and reaching."],["🔁","Tummy time rotation","Turn the toy to each side and encourage turning the head toward it."]]},{name:"✋ Fine Motor",items:[["🧸","Hold a soft toy","Offer a properly sized soft toy and help Baby S hold it."],["🫙","Container play","Let Baby S touch and press a large plastic container with a lid."],["🧵","Gentle hand opening","Open and close one hand with a soft toy in between toy and palm."]]}]},
-      5: { label: "Month 5", categories: [{name:"🧠 Cognitive",items:[["📚","Board book time","Read simple books with large pictures and name one object on each page."],["🧩","Pattern play","Offer two contrasting objects and repeat the same pattern gently."],["🎲","Cause and effect","Try pressing a toy or touching a switch and respond with excitement."]]},{name:"👁 Sensory",items:[["🪵","Texture tray","Explore rough, smooth, and soft textures with supervision."],["🏖️","Water play","Use a shallow tray and let Baby S splash with assistance."],["🍋","Scent play","Briefly expose mild scents like lemon peel or vanilla and stop if uncomfortable."]]},{name:"❤️ Emotional & Social",items:[["🎵","Music and songs","Sing familiar songs and pause for Baby S to vocalize or smile."],["👀","Face-to-face eye contact","Hold Baby S close and talk softly during transitions."],["🤗","Comfort routines","Use the same words and motions for calming and feeding routines."]]},{name:"🏃 Gross Motor",items:[["🚶","Supported sitting","Practice sitting with support and gentle repositioning."],["🪀","Roll toy chase","Place a toy to one side to encourage rolling toward it."],["💪","Elbow tummy time","Support propping on elbows for a few seconds during tummy time."]]},{name:"✋ Fine Motor",items:[["🧱","Stacking blocks","Stack soft blocks and show knocking them down together."],["📦","Drop and pick up","Drop large toys into a container and retrieve them with help."],["🧤","Sock pull","Offer soft socks to pull and explore with hands."]]}]},
-      6: { label: "Month 6", categories: [{name:"🧠 Cognitive",items:[["🧩","Object permanence","Hide a toy under a cloth and let Baby S find it."],["📦","Name household items","Point to big items like cup, spoon, and book while naming them."],["🔊","Animal sounds","Repeat animal noises and encourage listening and imitation." ]]},{name:"👁 Sensory",items:[["🎵","Noise and rhythm","Use shakers and gentle drums for sound play."],["🌱","Grass and sand touch","Allow safe, supervised exploration of grass and dry sand."],["🧺","Sensory bins","Introduce safe textured items inside a supervised basket."]]},{name:"❤️ Emotional & Social",items:[["👩‍👩‍👧","Turn-taking play","Take turns making sounds, smiling, and tapping together."],["📸","Family photo recognition","Point to familiar people and say their names."],["🤝","Simple comfort language","Use calm repeated phrases such as 'It's okay, I'm here.'"]]},{name:"🏃 Gross Motor",items:[["🧍","Standing with support","Practice brief standing and weight-bearing with support."],["🚴","Muscle push play","Encourage reaching and pushing against your hands or a cushion."],["💥","Rolling games","Offer toys to the side to encourage rolling in either direction."]]},{name:"✋ Fine Motor",items:[["🧱","Block tower","Stack large blocks and knock them down together."],["📄","Paper tearing","Offer big paper with close supervision and easy cleanup."],["🧤","Finger play","Use songs where fingers open and close together."]]}]},
-      9: { label: "Month 9", categories: [{name:"🧠 Cognitive",items:[["🔍","Hide-and-seek toys","Hide toys in plain sight and ask 'where is it?'"],["📚","Picture naming","Name pictures during book time and ask simple questions."],["🧩","Cause and effect","Press buttons and repeat the result with excitement."]]},{name:"👁 Sensory",items:[["🎵","Music play","Use rhythm instruments and encourage clapping."],["🏖️","Water basin","Let Baby S kick and splash in a shallow supervised basin."],["🧸","Texture basket","Offer varied items such as sponge, plush, and fabric."]]},{name:"❤️ Emotional & Social",items:[["🎉","Imitation games","Copy Baby S's sounds and actions to build connection."],["👀","Mirror joy","Look in the mirror and point to the face with happy words."],["🤗","Routine soothing","Say familiar comfort words and repeat routines."]]},{name:"🏃 Gross Motor",items:[["🧍","Cruising support","Offer support near furniture to encourage standing and weight shift."],["⚽","Kick a ball","Practice rolling and kicking a soft ball."],["🧭","Reach and crawl","Place toys just out of reach to encourage crawling."]]},{name:"✋ Fine Motor",items:[["🧱","Stacking soft blocks","Stack and knock down soft blocks."],["🧺","Scoop and pour","Use a wide scoop and container to pour small items."],["📏","Point and touch","Use index finger to touch nose, ears, and mouth."]]}]},
-      12: { label: "Month 12", categories: [{name:"🧠 Cognitive",items:[["🧩","Simple puzzles","Use big wooden or foam pieces and encourage matching."],["📚","Book questions","Ask where things are and point to pictures in books."],["🎲","Shape sorting","Sort big shapes or colors in simple games."]]},{name:"👁 Sensory",items:[["🎵","Instrument play","Offer drums, shakers, and rattles with supervision."],["🌿","Texture walk","Touch grass, sand, and safe outdoor textures."],["💦","Bubbles","Bubble play from a safe distance with close monitoring."]]},{name:"❤️ Emotional & Social",items:[["🗣️","Simple language","Use short sentences with clear names for people and objects."],["😄","Turn-taking games","Take turns with clapping and sounds."],["🤝","Family routines","Use predictable family rituals and songs."]]},{name:"🏃 Gross Motor",items:[["🚶","Walking practice","Offer support while Baby S explores standing and walking."],["🏐","Throw and roll","Roll a ball together and encourage reaching and throwing."],["🧠","Obstacle crawl","Make a simple route with soft pillows under supervision."]]},{name:"✋ Fine Motor",items:[["🧱","Stacking taller towers","Build with larger pieces and enjoy knocking them down."],["📦","Pour and fill","Pour from one container to another with help."],["🧵","Finger threading","Use large, safe threading objects under supervision."]]}]},
-      18: { label: "Month 18", categories: [{name:"🧠 Cognitive",items:[["🎯","Simple sorting","Sort by color or category with large objects."],["📚","Story time","Name pictures in story books and ask where items are."],["🔢","Counting fun","Clap and count to three with simple repetition."]]},{name:"👁 Sensory",items:[["🎶","Music and movement","Use rhythm songs and dancing patterns."],["🎒","Sensory backpack","Explore with fabric pieces and safe soft items."],["🪴","Nature touch","Look at leaves, flowers, and textured outdoor objects."]]},{name:"❤️ Emotional & Social",items:[["🗣️","Simple conversation","Talk about daily routines and ask about pictures."],["😊","Play pretend","Pretend to feed a doll or stuffed animal."]]},{name:"🏃 Gross Motor",items:[["🚲","Push toy play","Push and pull safe toys while walking."],["🏃","Climb with support","Offer a stable stepping stool or couch support under supervision."],["⚽","Ball games","Kick and throw soft balls together."]]},{name:"✋ Fine Motor",items:[["🧩","Larger puzzles","Complete big shape puzzles with help."],["🪀","Simple cause and effect toys","Press buttons and twist knobs with supervision."],["📦","Container fill and dump","Fill and empty wide containers repeatedly."]]}]},
-      24: { label: "Month 24", categories: [{name:"🧠 Cognitive",items:[["🧩","Shape matching","Match big shapes, colors, and objects together."],["📖","Story retell","Ask Baby S to point to familiar animals or objects in books."],["🔢","Count together","Count to 2 or 3 while clapping or pointing to objects."]]},{name:"👁 Sensory",items:[["🧪","Safe sensory bins","Explore grains, water, or large items under supervision."],["🌳","Nature sensory day","Touch leaves, grass, and safe outdoor objects."],["🎵","Sound scavenger hunt","Listen for sounds outdoors and react with joy."]]},{name:"❤️ Emotional & Social",items:[["🗣️","Follow simple instructions","Ask to bring a toy or book and celebrate."],["🧸","Pretend play","Role-play with dolls and animals."],["🎉","Social games","Take turns and enjoy simple group reactions."]]},{name:"🏃 Gross Motor",items:[["⚽","Kick and throw","Play ball games and encourage active movement."],["🧍","Running games","Support safe running and obstacle play."],["🚶","Wider walking","Encourage walking in safe open spaces."]]},{name:"✋ Fine Motor",items:[["🧱","Block tower building","Build taller towers and knock them down."],["🧩","Larger puzzles","Use bigger pieces and more complex shape matching."],["🧴","Small object sorting","Sort large safe items by type or color."]]}]}
-    };
+      const monthTwoCategories = [
+        {
+          name: "🧠 Cognitive · 認知",
+          items: [
+            ["🪞", "Mirror Recognition · 鏡子認識初探", "Hold Baby S safely near a mirror and say, 'Who is that? It's you!' Encourage eye contact and gentle smiling."],
+            ["🎵", "Short Voice Songs · 短歌歌唱", "Sing a simple repeated song with a soft voice. Babies often enjoy predictable rhythm and calm repetition."],
+            ["👀", "Track Moving Face · 追視人臉", "Move slowly in front of Baby S's gaze and wait for eye tracking, smiling, and head turning."],
+            ["🔊", "Sound and Pause · 聲音後停頓", "Say a sound, pause, and wait. Babies begin learning turn-taking and attention patterns."],
+          ]
+        },
+        {
+          name: "👁 Sensory · 感官刺激",
+          items: [
+            ["🤸", "Tummy Time 15 Minutes · TT 15計", "Offer supervised tummy time on a firm mat in short, comfortable periods that total around 15 minutes."],
+            ["🌿", "Touch Different Textures · 觸摸不同材質", "Gently touch soft fabric, satiny cloth, and a smooth toy to help Baby S notice different textures."],
+            ["🎧", "Soft Sound Listening · 軟音樂傾聽", "Play soft lullabies or gentle humming and notice whether Baby S turns toward or calms to the sound."],
+          ]
+        },
+        {
+          name: "❤️ Emotional & Social · 情緒社交",
+          items: [
+            ["👏", "Clap Song · 拍手歌遊戲", "Gently hold Baby S's hands and clap together while singing a short clapping song."],
+            ["😊", "Face-to-Face Smiles · 面對面微笑", "Hold Baby S close, make eye contact, and smile and talk softly. This supports social bonding."],
+            ["👶", "Responsive Cooing · 回應咿呀", "Respond to Baby S's sounds with smiles and gentle repeating sounds to support communication."],
+          ]
+        },
+        {
+          name: "🏃 Gross Motor · 大肌肉",
+          items: [
+            ["🔔", "Reach for Hanging Toy · 掛物伸手", "Place a safe toy above Baby S's chest, within reach, and encourage reaching. Never leave them unattended."],
+            ["🧍", "Brief Supported Hold · 短暫扶抱", "Support Baby S in a seated or upright position for short periods while maintaining close supervision."],
+            ["🛏️", "Side-Lying Turning · 側睡轉向", "Encourage gentle turning to the side during playtime; keep all sessions calm and supervised."],
+          ]
+        },
+        {
+          name: "✋ Fine Motor · 細肌肉",
+          items: [
+            ["🔔", "Two Rattles · 雙手各握鈴", "Offer one lightweight, baby-safe rattle at a time to each hand and notice whether Baby S holds or moves it."],
+            ["🧸", "Soft Block Touch · 軟積木摸索", "Gently place a large soft block in Baby S's hand and help the fingers grasp it."],
+            ["🖐️", "Open-and-Close Hands · 張開握拳", "Guide Baby S's hands open and closed during play; this supports hand awareness and muscle control."],
+          ]
+        }
+      ];
 
-    function calculateAgeInMonths(dateString){const birth=new Date(`${dateString}T00:00:00`),today=new Date();let months=(today.getFullYear()-birth.getFullYear())*12+today.getMonth()-birth.getMonth();if(today.getDate()<birth.getDate())months--;return Math.max(0,months)}
-    function cardGrid(items){const grid=document.createElement('div');grid.className='cards';items.forEach(item=>{const [icon,title,description]=Array.isArray(item)?item:[item.icon,item.title,item.description];const card=document.createElement('article');card.className='card';card.innerHTML=`<div class="icon">${icon}</div><h3></h3><p></p>`;card.querySelector('h3').textContent=title;card.querySelector('p').textContent=description;grid.appendChild(card)});return grid}
-    function renderPlan(plan){const container=document.getElementById('activities');container.innerHTML='';if(plan.categories){plan.categories.forEach(category=>{const section=document.createElement('section');section.className='category';const heading=document.createElement('h3');heading.className='category-title';heading.textContent=category.name;section.appendChild(heading);section.appendChild(cardGrid(category.items));container.appendChild(section)})}else{container.appendChild(cardGrid(plan.items))}}
+      const monthThreeCategories = [
+        {
+          name: "🧠 Cognitive · 認知智力",
+          items: [
+            ["🙈", "Peekaboo with Both Hands · Peekaboo雙手遮臉", "Cover your face for about two seconds and say, 'Gone!' Then reappear with 'Boo!' Repeat a few times."],
+            ["🎧", "Sound Tracking · 聲源追蹤", "Shake a soft rattle or toy to one side and see whether Baby S turns toward the sound."],
+            ["👀", "Follow a Face · 追視人臉", "Slowly move your face from side to side and wait for Baby S to watch you follow."],
+          ]
+        },
+        {
+          name: "👁 Sensory · 感官刺激",
+          items: [
+            ["🌿", "Barefoot Grass · 草地赤腳踩", "At a clean park area, hold Baby S securely while a bare foot briefly feels grass. Say, 'Soft! Cool! Tickle!'"],
+            ["🧺", "Bottle or Cup Shaker · 搖盪瓶杯", "Fill a baby-safe bottle or cup with a few soft items and explore sound and movement with supervision."],
+            ["🧵", "Textured Cloth Play · 觸感布遊戲", "Offer a clean cloth with different textures and let Baby S touch and explore it."],
+          ]
+        },
+        {
+          name: "❤️ Emotional & Social · 情商社交",
+          items: [
+            ["👋", "Brief Separation · 短暫離視線5秒", "Step briefly out of sight for about five seconds, return promptly, and say, 'Mama's here!'"],
+            ["😊", "Social Smile Games · 社交微笑遊戲", "Smile, pause, smile again and wait for Baby S to react; repeat with warm, calm expression."],
+            ["🗣️", "Copy Cooing · 模仿咿呀", "If Baby S coos, repeat the same sound back in a gentle, playful way."],
+          ]
+        },
+        {
+          name: "🏃 Gross Motor · 大肌肉",
+          items: [
+            ["↪️", "Complete Left-to-Right Roll · 左至右完整翻身", "Place Baby S on the left side with a toy to the right. Wait and encourage a complete rolling movement."],
+            ["🧠", "Reach and Stretch · 伸手抓玩具", "Place a toy slightly away from Baby S and encourage reaching while supporting the trunk."],
+            ["🛏️", "Side Play · 側躺花式玩", "Offer side-lying play on a mat while making sure Baby S stays comfortable and secure."],
+          ]
+        },
+        {
+          name: "✋ Fine Motor · 細肌肉",
+          items: [
+            ["⚽", "Two-Hand Ball · 雙手抓大軟球", "Place a large soft ball between Baby S's hands and let fingers wrap around it with supervision."],
+            ["🧸", "Gentle Block Hold · 輕握積木", "Give Baby S a large soft block or sensory ring to hold and explore with fingers."],
+            ["🧶", "Loop Ring Toy · 圈圈玩具", "Offer a ring or soft sensory toy for hand contact and gentle grasping practice."],
+          ]
+        }
+      ];
 
-    const ageInMonths = calculateAgeInMonths(BABY_BIRTHDAY);
-    document.getElementById('currentAge').innerHTML = `Baby S is currently <strong>${ageInMonths} month${ageInMonths===1?'':'s'} old</strong><small>Birthday: July 15, 2026 · Age is calculated automatically from today's date</small>`;
-    document.getElementById('ageBadge').textContent = `${ageInMonths} months`;
+      const monthPlans = {
+        2: {
+          label: "2 months (September)",
+          categories: monthTwoCategories
+        },
+        3: {
+          label: "3 months (October)",
+          categories: monthThreeCategories
+        },
+        4: {
+          label: "4 months (November)",
+          categories: [
+            { name: "🧠 Cognitive", items: [["🧩", "Object permanence games", "Hide a toy and gently encourage looking for it with large, easy-to-find objects."], ["🔊", "Sound play", "Rattle or shake a toy to one side and help Baby S track the sound."], ["📚", "Board book time", "Read simple books with large pictures and name one object on each page."]] },
+            { name: "👁 Sensory", items: [["🧸", "Texture touch", "Explore smooth, rough, and soft fabrics with short supervised play sessions."], ["🌈", "Color cards", "Introduce bright red, yellow, or blue cards while naming the color."], ["💦", "Water play", "Offer a little water in a safe, shallow tray for watching and splashing."]] },
+            { name: "❤️ Emotional & Social", items: [["😊", "Laugh-and-repeat", "Smile and laugh back when Baby S smiles or coos to build social connection."], ["👋", "Playful peekaboo", "Cover your face and then reappear with a smile and warm voice."], ["🫶", "Calm reassurance", "Respond gently and consistently to crying to build trust and security."]] },
+            { name: "🏃 Gross Motor", items: [["🧻", "Roll and reach", "Place a toy to the side to encourage turning and reaching."], ["🛏️", "Tummy time progress", "Increase tummy-time support gradually; focus on comfort and posture."], ["🧍", "Supported sit practice", "Offer short supported sitting periods with a firm back and close supervision."]] },
+            { name: "✋ Fine Motor", items: [["🧱", "Soft block grasp", "Offer a soft block or ring for grasping and holding."], ["🖐️", "Hand-to-hand transfer", "Guide a toy from one hand to the other with a warm smile."], ["🧵", "Ring toy play", "Offer a large ring toy to grasp and explore."]] }
+          ]
+        },
+        5: {
+          label: "5 months (December)",
+          categories: [
+            {
+              name: "🧠 認知智力 COGNITIVE",
+              items: [
+                ["🧣", "【物件永存初探】", "例①: 布下藏球問「波波呢？Where?」等BB掀布；例②: Object permanence. E.g.: Hide ball under cloth 'where?' let baby uncover."],
+                ["👂", "【不同距離叫名字】", "例①: 在不同距離叫名字，看是否轉頭；例②: Name response. E.g.: Call name at different distances; note head turning."],
+                ["🎵", "【音樂因果按鈕】", "例①: 不同按鈕→不同動物聲，各重複3次；例②: Music buttons. E.g.: Different buttons=different sounds; x3 each."],
+                ["📚", "【書配實物對比】", "例①: 書中蘋果對比真蘋果「一樣！Same!」；例②: Book vs real. E.g.: Book apple vs real apple: 'same! both red!'"],
+                ["🟠", "【橙綠顏色卡】", "例①: 橙色南瓜「橙！Orange!」綠葉「綠！Green!」；例②: Orange/green. E.g.: Orange pumpkin 'orange!'; green leaf 'green!'"],
+                ["🦵", "【身體動作指令】", "例①: 「拍拍手！Clap!舉高手！Raise!踢腳！Kick!」；例②: Body commands. E.g.: 'Clap hands! Raise arms! Kick feet!'"],
+                ["📖", "【睡前固定閱讀】", "例①: 每晚讀同一本圖書建立習慣；例②: Bedtime reading. E.g.: Read same book each night; build routine."]
+              ]
+            },
+            {
+              name: "👁️ 感官刺激 SENSORY",
+              items: [
+                ["🥔", "【輔食觸感初探】", "例①: 手指觸碰蕃薯泥「軟軟的！Soft!黏黏！」；例②: Solids texture. E.g.: Touch sweet potato puree: 'soft! squishy! sticky!'"],
+                ["🥤", "【杯子倒水觀察】", "例①: 用杯在小盆倒水「嘩嘩！Water flowing!」；例②: Water pouring. E.g.: Use cup to pour: 'whoosh! water flowing!'"],
+                ["🧺", "【沙盆埋動物挖】", "例①: 沙盆放小動物，手指挖掘尋找「挖！Dig!」；例②: Dig for animals. E.g.: Bury small animals in sand; fingers dig 'dig!'"],
+                ["🍴", "【廚房聲音辨認】", "例①: 聽水煲聲、木匙敲碗，辨認聲音；例②: Kitchen sounds. E.g.: Listen to boiling water, spoon on bowl; name sounds."],
+                ["🌿", "【公園草地坐探索】", "例①: 草地感受葉子小石泥土各質感；例②: Park grass sit. E.g.: Feel leaves, pebbles, soil textures in park."],
+                ["🥔", "【輔食質感三比較】", "例①: 番薯泥vs粥vs磨蘋果，感受軟硬；例②: 3 solids compare. E.g.: Compare sweet potato/porridge/mashed apple textures."],
+                ["🍁", "【落葉撿拾感受】", "例①: 公園拾落葉聽嘎吱聲「嘎！Crunch!」；例②: Fallen leaves. E.g.: Collect fallen leaves; feel and hear the crunch."]
+              ]
+            },
+            {
+              name: "❤️ 情商社交 EMOTIONAL",
+              items: [
+                ["📣", "【叫名字轉頭鼓掌】", "例①: 叫名字BB轉頭立即鼓掌「答到喇！」；例②: Name praise. E.g.: Baby turns to name→clap 'you responded!'"],
+                ["🚶", "【離房前預告】", "例①: 離房前「媽媽去廁所，很快返嚟！」；例②: Separation warning. E.g.: Before leaving: 'mama going, back very soon!'"],
+                ["👀", "【餵食眼神微笑】", "例①: 餵食時眼神接觸微笑問「好食嗎？Yummy?」；例②: Feeding gaze. E.g.: Feed with eye contact + smile 'yummy?'"],
+                ["📖", "【情緒初讀繪本】", "例①: 讀簡單情緒繪本《開心/傷心/生氣》；例②: Emotion book. E.g.: Read simple emotion book: happy/sad/angry."],
+                ["🧸", "【安全基地探索】", "例①: BB地墊媽媽在旁，讓BB放心探索；例②: Secure base. E.g.: Baby on mat, mum nearby; feel secure to explore."],
+                ["😊", "【3個表情偏好】", "例①: 試3個不同表情，記BB哪個反應最大；例②: Expression pref. E.g.: Try 3 expressions; note which baby responds most to."],
+                ["👨‍👩‍👧", "【大家庭感受日】", "例①: 拜訪祖父母感受大家庭環境；例②: Extended family. E.g.: Visit grandparents; experience extended family."]
+              ]
+            },
+            {
+              name: "🏃 大肌肉 GROSS MOTOR",
+              items: [
+                ["🛏️", "【枕頭圍獨坐30s】", "例①: 四周放枕頭嘗試獨坐30秒；例②: Cushion sit 30s. E.g.: Surround with pillows; attempt sitting 30 sec."],
+                ["🧍", "【俯臥雙手撐起】", "例①: TT鼓勵由肘→雙手撐起上身；例②: Press-up TT. E.g.: Prone: encourage elbows to full press-up."],
+                ["🤸", "【四足準備姿勢】", "例①: 扶住腰部保持四足姿勢10秒；例②: Quadruped prep. E.g.: Hold waist in hands-and-knees position 10 sec."],
+                ["↪️", "【坐位扭身取物】", "例①: 獨坐玩具放側面讓身體扭轉取；例②: Sitting twist. E.g.: Sitting: toy at side; body twists to reach."],
+                ["⚽", "【坐位雙腳踢球】", "例①: 坐位雙腳把充氣球推開；例②: Sitting kick. E.g.: Sitting: use both feet to kick ball away."],
+                ["🧍", "【扶站初步10s】", "例①: 扶著矮茶几邊雙腳踩地支撐10秒；例②: First stand 10s. E.g.: Hold coffee table edge; feet on floor, 10 sec."],
+                ["🐾", "【草地初爬嘗試】", "例①: 嘗試四肢撐爬，無需強求給予鼓勵；例②: First crawl try. E.g.: Attempt four-limb crawling; no pressure, praise."]
+              ]
+            },
+            {
+              name: "✋ 細肌肉 FINE MOTOR",
+              items: [
+                ["🧱", "【積木左右換手各5次】", "例①: 左手積木→右手，各傳5次；例②: Block transfer x5. E.g.: Block L→R hand; x5 transfers each direction."],
+                ["🥄", "【小匙羹探索拿著】", "例①: 給小塑膠匙羹讓自己拿著搖擺；例②: Spoon explore. E.g.: Give small plastic spoon to hold and wave."],
+                ["📖", "【硬頁書自己翻頁】", "例①: 自己翻頁說「翻！Turn!翻！下一頁！」；例②: Board book flip. E.g.: Self-turn pages: 'turn! next page!'"],
+                ["🧺", "【容器積木拿出】", "例①: 大碗積木讓BB拿出每一塊；例②: Dump from bowl. E.g.: Blocks in large bowl: let baby remove each one."],
+                ["🧷", "【大貼紙撕貼】", "例①: 大貼紙撕下再貼回紙板「撕！Peel!」；例②: Peel & stick. E.g.: Large sticker: peel off and stick back 'peel!'"],
+                ["🥣", "【添食物More手勢】", "例①: 添食物說「更多！More!」等BB嘗試表示；例②: 'More' signal. E.g.: Adding food: 'more!' wait for baby to signal."],
+                ["🦆", "【全家五小鴨】", "例①: 齊玩《五隻小鴨子》手指歌；例②: Family finger song. E.g.: All family plays Five Little Ducks finger song."]
+              ]
+            }
+          ]
+        },
+        6: {
+          label: "6 months (January)",
+          categories: [
+            {
+              name: "🧠 認知智力 COGNITIVE",
+              items: [
+                ["🧣", "【布下藏找自行掀】", "例①: 把球藏布下讓BB自行掀布「找到喇！Found!」；例②: Object permanence. E.g.: Hide ball; let baby lift cloth to find 'found it!'"],
+                ["🐶", "【動物聲配對x3】", "例①: 展示狗圖卡「汪！Woof!」貓圖卡「喵！Meow!」各3遍；例②: Animal sound match. E.g.: Dog card 'woof!', cat card 'meow!'; x3 each."],
+                ["👏", "【手勢模仿拍手揮】", "例①: 示範拍手等BB模仿，再示範揮手「揮！Wave!」；例②: Gesture imitation. E.g.: Demo clap; wait for imitation; then demo wave."],
+                ["🧱", "【給我遊戲積木】", "例①: 積木給BB說「俾我！Give me!」等BB遞回；例②: Give-me game. E.g.: Give block 'give me!'; wait for baby to pass back."],
+                ["🧣", "【兩布藏找哪一個】", "例①: 玩具藏A或B布下，觀察BB去哪個找；例②: Two-cloth hiding. E.g.: Toy under cloth A or B; observe which baby searches."],
+                ["🦵", "【身體指令升級三個】", "例①: 「BB拍拍手！Clap!BB舉高！Raise!BB搖頭！Shake!」；例②: Body commands+. E.g.: 'Baby clap! Baby raise! Baby shake head!'"],
+                ["👨‍👩‍👧", "【家人指認等BB指】", "例①: 指著家人問「呢個係咩人？Who?」等BB用手指；例②: Family pointing. E.g.: Point to family: 'who is this?' wait for baby to point."]
+              ]
+            },
+            {
+              name: "👁️ 感官刺激 SENSORY",
+              items: [
+                ["🕳️", "【爬行隧道探索】", "例①: 鑽爬隧道，出口放玩具引誘進入；例②: Crawl tunnel. E.g.: Crawl through tunnel; toy at exit as reward."],
+                ["🏖️", "【濕沙盆黏感受】", "例①: 沙盆加水感受濕沙「黏！Sticky!冷！Cool!」；例②: Wet sand. E.g.: Sand bin with water: 'sticky! cool! wet sand!'"],
+                ["🧸", "【三種地面爬比較】", "例①: 木地板→地毯→瑜伽墊各爬1分鐘比較；例②: 3-surface crawl. E.g.: Wood→carpet→yoga mat; crawl 1 min each, compare."],
+                ["🥁", "【打擊樂器三輪換】", "例①: 木琴/搖鈴/手鼓輪流玩各30秒比較；例②: Percussion rotation. E.g.: Xylophone/rattle/drum rotation; 30 sec each."],
+                ["🍽️", "【手指食物豆腐初探】", "例①: 軟爛豆腐塊讓手指抓取「抓！Grab!」；例②: Finger food intro. E.g.: Soft diced tofu for finger food grasping practice."],
+                ["🧄", "【薑蒜廚房嗅覺】", "例①: 薑片/蒜頭靠近不接觸皮膚，觀察反應；例②: Ginger-garlic scents. E.g.: Ginger, garlic near nose; no skin contact."],
+                ["💦", "【噴水池腳踩】", "例①: 公園噴水旁讓腳踩淺水「冰涼！Cool water!」；例②: Splash pad feet. E.g.: Park splash pad: let feet touch water 'cool!'" ]
+              ]
+            },
+            {
+              name: "❤️ 情商社交 EMOTIONAL",
+              items: [
+                ["🤝", "【認生正面引導】", "例①: 遇陌生人先由媽媽互動讓BB安全觀察；例②: Stranger guide. E.g.: With strangers: mum interacts first; baby observes safely."],
+                ["🚪", "【門後分離遊戲】", "例①: 媽媽躲門後5秒「媽媽在！Mama's here!」x3；例②: Door separation. E.g.: Mum hides behind door 5 sec 'mama's here!' x3."],
+                ["😊", "【情緒即時命名】", "例①: BB笑「你開心！Happy!」BB皺眉「唔舒服？」；例②: Emotion labeling. E.g.: Baby laughs 'you're happy!'; frowns 'uncomfortable?'"],
+                ["🧸", "【安慰物毛絨被】", "例①: 讓BB有固定安慰物—毛絨玩具或小被；例②: Security object. E.g.: Consistent comfort object: plush toy or small blanket."],
+                ["🌟", "【讚賞爬行進步】", "例①: BB爬過去說「叻！你爬到嗰度！Crawled!」；例②: Crawl praise. E.g.: Baby crawls to toy 'clever! You crawled all the way!'"],
+                ["👶", "【媽媽group同齡】", "例①: 去媽媽group讓BB和同齡BB並排玩；例②: Same-age group. E.g.: Mums group: baby plays alongside same-age babies."],
+                ["🍽️", "【家庭晚飯參與】", "例①: BB坐餐椅參與家庭晚飯感受互動；例②: Family dinner. E.g.: Baby in high chair; join family dinner."]
+              ]
+            },
+            {
+              name: "🏃 大肌肉 GROSS MOTOR",
+              items: [
+                ["🧸", "【玩具前方誘爬】", "例①: 玩具在前引導爬行，每次前進多5cm；例②: Crawl lure. E.g.: Toy ahead; advance 5cm further each session."],
+                ["🧍", "【扶站30-45s】", "例①: 扶茶几邊站立30-45秒「企！Stand!」；例②: Cruise stand 30s. E.g.: Hold coffee table edge; stand 30-45 sec."],
+                ["🛏️", "【枕頭障礙爬越】", "例①: 用枕頭設置小障礙讓BB爬越「越過！Over!」；例②: Pillow obstacle. E.g.: Pillows as obstacles; let baby crawl over them."],
+                ["⚽", "【追球爬行遊戲】", "例①: 滾動球讓BB追著爬「快！Chase!」；例②: Chase ball crawl. E.g.: Roll ball; baby crawls to chase 'fast! catch it!'"],
+                ["🛋️", "【低沙發攀爬嘗試】", "例①: 低沙發旁讓BB嘗試爬上爬落；例②: Sofa climb. E.g.: Low sofa: let baby attempt to climb up and down."],
+                ["↔️", "【站立輕晃平衡】", "例①: 扶站時輕輕晃動誘導主動平衡調整；例②: Balance sway. E.g.: During stand: gently sway to challenge balance."],
+                ["🌿", "【公園草地自由爬】", "例①: 公園草地四肢爬行，自由探索環境；例②: Outdoor free crawl. E.g.: Crawl on park grass; freely explore surroundings."]
+              ]
+            },
+            {
+              name: "✋ 細肌肉 FINE MOTOR",
+              items: [
+                ["🧱", "【疊2塊積木】", "例①: 示範疊2塊讓BB跟做「疊！Stack!」；例②: Stack 2 blocks. E.g.: Demo 2 blocks; let baby attempt to stack."],
+                ["🫙", "【小物入廣口瓶】", "例①: 5粒大豆入廣口瓶「進去！In!進去！」；例②: Drop beans in jar. E.g.: 5 large beans into wide-mouth jar 'in! in!'"],
+                ["🏷️", "【大貼紙撕下】", "例①: 大貼紙讓BB撕下「撕！Tear!好叻！」；例②: Peel large sticker. E.g.: Large sticker: peel off 'tear! well done!'"],
+                ["📖", "【翻書2-3頁問】", "例①: 每頁問「呢個係咩？What's this?」等回應；例②: Flip book Q&A. E.g.: Flip 2-3 pages; ask 'what's this?' each page."],
+                ["🥄", "【匙羹舀軟食物】", "例①: 軟食物引導BB用匙羹舀起；例②: Spoon scooping. E.g.: Soft food: guide baby to scoop with spoon."],
+                ["👋", "【揮手拜拜教導】", "例①: 家人離開教揮手「拜拜！Bye bye!」；例②: Wave bye-bye. E.g.: Family leaves: teach wave 'bye bye!'"],
+                ["🦆", "【全家手勢遊戲】", "例①: 全家示範拜拜/鼓掌/飛吻，BB模仿；例②: Family gesture. E.g.: Family shows wave/clap/flying kiss for baby to copy."]
+              ]
+            }
+          ]
+        },
+        7: {
+          label: "7 months (February)",
+          categories: [
+            {
+              name: "🧠 認知智力 COGNITIVE",
+              items: [
+                ["🧣", "【布下藏找自行掀】", "例①: 把球藏布下讓BB自行掀布「找到喇！Found!」；例②: Object permanence. E.g.: Hide ball; let baby lift cloth to find 'found it!'"],
+                ["🐶", "【動物聲配對x3】", "例①: 展示狗圖卡「汪！Woof!」貓圖卡「喵！Meow!」各3遍；例②: Animal sound match. E.g.: Dog card 'woof!', cat card 'meow!'; x3 each."],
+                ["👏", "【手勢模仿拍手揮】", "例①: 示範拍手等BB模仿，再示範揮手「揮！Wave!」；例②: Gesture imitation. E.g.: Demo clap; wait for imitation; then demo wave."],
+                ["🧱", "【給我遊戲積木】", "例①: 積木給BB說「俾我！Give me!」等BB遞回；例②: Give-me game. E.g.: Give block 'give me!'; wait for baby to pass back."],
+                ["🧣", "【兩布藏找哪一個】", "例①: 玩具藏A或B布下，觀察BB去哪個找；例②: Two-cloth hiding. E.g.: Toy under cloth A or B; observe which baby searches."],
+                ["🦵", "【身體指令升級三個】", "例①: 「BB拍拍手！Clap!BB舉高！Raise!BB搖頭！Shake!」；例②: Body commands+. E.g.: 'Baby clap! Baby raise! Baby shake head!'"],
+                ["👨‍👩‍👧", "【家人指認等BB指】", "例①: 指著家人問「呢個係咩人？Who?」等BB用手指；例②: Family pointing. E.g.: Point to family: 'who is this?' wait for baby to point."]
+              ]
+            },
+            {
+              name: "👁️ 感官刺激 SENSORY",
+              items: [
+                ["🕳️", "【爬行隧道探索】", "例①: 鑽爬隧道，出口放玩具引誘進入；例②: Crawl tunnel. E.g.: Crawl through tunnel; toy at exit as reward."],
+                ["🏖️", "【濕沙盆黏感受】", "例①: 沙盆加水感受濕沙「黏！Sticky!冷！Cool!」；例②: Wet sand. E.g.: Sand bin with water: 'sticky! cool! wet sand!'"],
+                ["🧸", "【三種地面爬比較】", "例①: 木地板→地毯→瑜伽墊各爬1分鐘比較；例②: 3-surface crawl. E.g.: Wood→carpet→yoga mat; crawl 1 min each, compare."],
+                ["🥁", "【打擊樂器三輪換】", "例①: 木琴/搖鈴/手鼓輪流玩各30秒比較；例②: Percussion rotation. E.g.: Xylophone/rattle/drum rotation; 30 sec each."],
+                ["🍽️", "【手指食物豆腐初探】", "例①: 軟爛豆腐塊讓手指抓取「抓！Grab!」；例②: Finger food intro. E.g.: Soft diced tofu for finger food grasping practice."],
+                ["🧄", "【薑蒜廚房嗅覺】", "例①: 薑片/蒜頭靠近不接觸皮膚，觀察反應；例②: Ginger-garlic scents. E.g.: Ginger, garlic near nose; no skin contact."],
+                ["💦", "【噴水池腳踩】", "例①: 公園噴水旁讓腳踩淺水「冰涼！Cool water!」；例②: Splash pad feet. E.g.: Park splash pad: let feet touch water 'cool!'" ]
+              ]
+            },
+            {
+              name: "❤️ 情商社交 EMOTIONAL",
+              items: [
+                ["🤝", "【認生正面引導】", "例①: 遇陌生人先由媽媽互動讓BB安全觀察；例②: Stranger guide. E.g.: With strangers: mum interacts first; baby observes safely."],
+                ["🚪", "【門後分離遊戲】", "例①: 媽媽躲門後5秒「媽媽在！Mama's here!」x3；例②: Door separation. E.g.: Mum hides behind door 5 sec 'mama's here!' x3."],
+                ["😊", "【情緒即時命名】", "例①: BB笑「你開心！Happy!」BB皺眉「唔舒服？」；例②: Emotion labeling. E.g.: Baby laughs 'you're happy!'; frowns 'uncomfortable?'"],
+                ["🧸", "【安慰物毛絨被】", "例①: 讓BB有固定安慰物—毛絨玩具或小被；例②: Security object. E.g.: Consistent comfort object: plush toy or small blanket."],
+                ["🌟", "【讚賞爬行進步】", "例①: BB爬過去說「叻！你爬到嗰度！Crawled!」；例②: Crawl praise. E.g.: Baby crawls to toy 'clever! You crawled all the way!'"],
+                ["👶", "【媽媽group同齡】", "例①: 去媽媽group讓BB和同齡BB並排玩；例②: Same-age group. E.g.: Mums group: baby plays alongside same-age babies."],
+                ["🍽️", "【家庭晚飯參與】", "例①: BB坐餐椅參與家庭晚飯感受互動；例②: Family dinner. E.g.: Baby in high chair; join family dinner."]
+              ]
+            },
+            {
+              name: "🏃 大肌肉 GROSS MOTOR",
+              items: [
+                ["🧸", "【玩具前方誘爬】", "例①: 玩具在前引導爬行，每次前進多5cm；例②: Crawl lure. E.g.: Toy ahead; advance 5cm further each session."],
+                ["🧍", "【扶站30-45s】", "例①: 扶茶几邊站立30-45秒「企！Stand!」；例②: Cruise stand 30s. E.g.: Hold coffee table edge; stand 30-45 sec."],
+                ["🛏️", "【枕頭障礙爬越】", "例①: 用枕頭設置小障礙讓BB爬越「越過！Over!」；例②: Pillow obstacle. E.g.: Pillows as obstacles; let baby crawl over them."],
+                ["⚽", "【追球爬行遊戲】", "例①: 滾動球讓BB追著爬「快！Chase!」；例②: Chase ball crawl. E.g.: Roll ball; baby crawls to chase 'fast! catch it!'"],
+                ["🛋️", "【低沙發攀爬嘗試】", "例①: 低沙發旁讓BB嘗試爬上爬落；例②: Sofa climb. E.g.: Low sofa: let baby attempt to climb up and down."],
+                ["↔️", "【站立輕晃平衡】", "例①: 扶站時輕輕晃動誘導主動平衡調整；例②: Balance sway. E.g.: During stand: gently sway to challenge balance."],
+                ["🌿", "【公園草地自由爬】", "例①: 公園草地四肢爬行，自由探索環境；例②: Outdoor free crawl. E.g.: Crawl on park grass; freely explore surroundings."]
+              ]
+            },
+            {
+              name: "✋ 細肌肉 FINE MOTOR",
+              items: [
+                ["🧱", "【疊2塊積木】", "例①: 示範疊2塊讓BB跟做「疊！Stack!」；例②: Stack 2 blocks. E.g.: Demo 2 blocks; let baby attempt to stack."],
+                ["🫙", "【小物入廣口瓶】", "例①: 5粒大豆入廣口瓶「進去！In!進去！」；例②: Drop beans in jar. E.g.: 5 large beans into wide-mouth jar 'in! in!'"],
+                ["🏷️", "【大貼紙撕下】", "例①: 大貼紙讓BB撕下「撕！Tear!好叻！」；例②: Peel large sticker. E.g.: Large sticker: peel off 'tear! well done!'"],
+                ["📖", "【翻書2-3頁問】", "例①: 每頁問「呢個係咩？What's this?」等回應；例②: Flip book Q&A. E.g.: Flip 2-3 pages; ask 'what's this?' each page."],
+                ["🥄", "【匙羹舀軟食物】", "例①: 軟食物引導BB用匙羹舀起；例②: Spoon scooping. E.g.: Soft food: guide baby to scoop with spoon."],
+                ["👋", "【揮手拜拜教導】", "例①: 家人離開教揮手「拜拜！Bye bye!」；例②: Wave bye-bye. E.g.: Family leaves: teach wave 'bye bye!'"],
+                ["🦆", "【全家手勢遊戲】", "例①: 全家示範拜拜/鼓掌/飛吻，BB模仿；例②: Family gesture. E.g.: Family shows wave/clap/flying kiss for baby to copy."]
+              ]
+            }
+          ]
+        },
+        9: {
+          label: "9 months (April)",
+          categories: [
+            { name: "🧠 Cognitive", items: [["🔍", "Hide-and-seek toys", "Hide toys in plain sight and ask 'where is it?'"], ["📚", "Picture naming", "Name pictures during book time and wait for Baby S to point."], ["🎶", "Musical cause and effect", "Press buttons or shake toys to hear sounds and reinforce repetition."]] },
+            { name: "👁 Sensory", items: [["🧂", "Taste-safe exploration", "Offer safe sensory foods and talk about taste and texture."], ["🧪", "Sound sorting", "Listen to different sounds and identify whether they are soft, loud, or rhythmic."], ["🌦️", "Outdoor sound walk", "Explore the park or yard while listening to leaves, birds, and wind."]] },
+            { name: "❤️ Emotional & Social", items: [["👋", "Wave and say bye-bye", "Practice waving when saying goodbye to family or friends."], ["🤝", "Simple social play", "Play side by side with family members for short and joyful interactions."], ["😊", "Emotion naming", "Label happy, excited, and calm feelings with simple words."]] },
+            { name: "🏃 Gross Motor", items: [["🧍", "Cruising practice", "Hold onto sturdy furniture for standing and small stepping movements."], ["🧩", "Obstacle crawl", "Create a soft crawl path over pillows or a mat."], ["⚽", "Soft ball chase", "Roll a soft ball and encourage crawling or walking toward it."]] },
+            { name: "✋ Fine Motor", items: [["🧱", "Block stacking", "Stack soft blocks and knock them down together."], ["🥄", "Spoon play", "Offer a spoon for safe independent holding and movement."], ["📦", "Container dumping", "Fill and empty a container with large items for practice."]] }
+          ]
+        },
+        12: {
+          label: "12 months (July)",
+          categories: [
+            { name: "🧠 Cognitive", items: [["🧩", "Simple puzzles", "Use big wooden or foam pieces and encourage matching."], ["📚", "Story time", "Read familiar books and ask simple 'where' or 'what' questions."], ["🎯", "Object matching", "Match lids to containers or blocks to holes."]] },
+            { name: "👁 Sensory", items: [["🌈", "Color sorting", "Sort large toys by color or size with guide cues."], ["💧", "Water and pouring", "Pour water between cups with close supervision and lots of excitement."], ["🍓", "Taste exploration", "Try safe sensory foods and talk about flavor and texture."]] },
+            { name: "❤️ Emotional & Social", items: [["🧑‍🤝‍🧑", "Simple pretend play", "Pretend to feed or care for a doll and name feelings."], ["👋", "Social routines", "Repeat greetings, waving, and simple songs together."], ["😊", "Clap for effort", "Praise each success with warm words and clapping."]] },
+            { name: "🏃 Gross Motor", items: [["🚶", "Cruise and step", "Practice cruising or stepping between sturdy furniture and a caregiver."], ["⚽", "Ball games", "Kick or roll a large soft ball together."], ["🧗", "Climb gently", "Offer a safe low-step or cushion for climbing practice with supervision."]] },
+            { name: "✋ Fine Motor", items: [["🧱", "Stacking towers", "Stack 2-3 blocks or cups with support."], ["🥄", "Self-feeding practice", "Offer a spoon to help with early self-feeding."]] }
+          ]
+        },
+        18: {
+          label: "18 months (January)",
+          categories: [
+            { name: "🧠 Cognitive", items: [["🎯", "Simple sorting", "Sort by color or category with large objects."], ["📚", "Picture books", "Point to pictures and name them during story time."], ["🧩", "Match and find", "Match shapes or find the correct item from two or three choices."]] },
+            { name: "👁 Sensory", items: [["🧪", "Sensory bins", "Explore a bin with scoops, cups, and safe materials."], ["🌾", "Nature textures", "Touch leaves, stones, or grass outside with supervision."], ["🎵", "Music and movement", "Dance and clap to songs with simple rhythms."]] },
+            { name: "❤️ Emotional & Social", items: [["🪁", "Pretend play", "Pretend to feed dolls, drive toys, or care for animals."], ["🤝", "Parallel play", "Play beside peers and encourage warm interaction."], ["😊", "Cooperative games", "Take turns, clap, and cheer for simple play routines."]] },
+            { name: "🏃 Gross Motor", items: [["🚲", "Push-and-pull toys", "Encourage pushing and pulling with sturdy toys."], ["🎾", "Ball play", "Kick and throw a soft ball together."], ["🪵", "Climb and step", "Practice stepping over safe obstacles and climbing on low surfaces."]] },
+            { name: "✋ Fine Motor", items: [["🧱", "Stack and balance", "Build taller towers and knock them down."], ["📦", "Open and close containers", "Explore opening and closing large boxes or jars with adult support."]] }
+          ]
+        },
+        24: {
+          label: "24 months (July)",
+          categories: [
+            { name: "🧠 Cognitive", items: [["🧩", "Shape matching", "Match big shapes, colors, and objects together."], ["📖", "Story retell", "Ask Baby S to point to pictures or retell a simple story."], ["🧠", "Simple routines", "Follow two-step routines such as 'pick up the book and sit down.'"]] },
+            { name: "👁 Sensory", items: [["🎨", "Color and paint play", "Explore safe paint or washable markers with large strokes."], ["🧂", "Texture sorting", "Sort rough and smooth materials in a sensory tray."], ["🎶", "Music acting", "Dance, stomp, and march to music together."]] },
+            { name: "❤️ Emotional & Social", items: [["🧑‍🤝‍🧑", "Turn-taking games", "Take turns rolling a ball or passing toys."], ["👋", "Pretend greetings", "Say hello and goodbye with high-fives and wave games."], ["😊", "Emotion discussion", "Talk about happy, sad, tired, and excited emotions."]] },
+            { name: "🏃 Gross Motor", items: [["⚽", "Kick and throw", "Use a soft ball to kick and throw with increasing balance."], ["🚲", "Ride-on play", "Enjoy a ride-on toy or push toy with support as needed."], ["🌳", "Outdoor movement", "Run, jump, and climb in a safe outdoor area."]] },
+            { name: "✋ Fine Motor", items: [["🧱", "Block towers", "Build towers, bridges, and simple structures with blocks."], ["🧸", "Large puzzles", "Work on 2-3 piece puzzles or simple matching tasks."], ["✂️", "Safe sensory cutting", "Use child-safe scissors with close adult guidance when ready."]] }
+          ]
+        }
+      };
 
-    const firstVisibleMonth = ageInMonths === 2 ? 2 : (ageInMonths === 3 ? 3 : (ageInMonths >= 4 ? ageInMonths : 2));
-    const defaultPlan = monthPlans[firstVisibleMonth] || monthPlans[2];
-    renderPlan(defaultPlan);
+      function calculateAgeInMonths(dateString) {
+        const birth = new Date(`${dateString}T00:00:00`);
+        const today = new Date();
+        let months = (today.getFullYear() - birth.getFullYear()) * 12 + (today.getMonth() - birth.getMonth());
+        if (today.getDate() < birth.getDate()) months -= 1;
+        return Math.max(0, months);
+      }
 
-    const select = document.getElementById('futureMonth');
-    const months = [2,3,4,5,6,9,12,18,24];
-    months.forEach(month => {
-      const option = document.createElement('option');
-      option.value = month;
-      option.textContent = `Month ${month}`;
-      select.appendChild(option);
-    });
-    select.value = String(firstVisibleMonth);
+      function monthNameFromNumber(monthNumber) {
+        const calendarDate = new Date(2026, 6 + monthNumber, 15);
+        return calendarDate.toLocaleString("en-US", { month: "long" });
+      }
 
-    document.getElementById('showMonthBtn').addEventListener('click', () => {
-      const selected = Number(select.value);
-      const plan = monthPlans[selected] || monthPlans[ageInMonths || 2];
-      renderPlan(plan);
-      document.getElementById('ageBadge').textContent = plan.label || `${selected} months`;
-    });
-  </script>
-</body>
+      function renderPlan(plan) {
+        const container = document.getElementById("activities");
+        container.innerHTML = "";
+
+        if (!plan || !plan.categories) {
+          container.innerHTML = "<div class='empty'>No activities available for this month.</div>";
+          return;
+        }
+
+        plan.categories.forEach((category) => {
+          const section = document.createElement("section");
+          section.className = "category";
+
+          const title = document.createElement("h3");
+          title.className = "category-title";
+          title.textContent = category.name;
+          section.appendChild(title);
+
+          const cards = document.createElement("div");
+          cards.className = "cards";
+
+          category.items.forEach(([icon, heading, description]) => {
+            const card = document.createElement("article");
+            card.className = "card";
+
+            const iconEl = document.createElement("div");
+            iconEl.className = "icon";
+            iconEl.textContent = icon || "✨";
+
+            const titleEl = document.createElement("h3");
+            titleEl.textContent = heading;
+
+            const p = document.createElement("p");
+            p.textContent = description;
+
+            card.appendChild(iconEl);
+            card.appendChild(titleEl);
+            card.appendChild(p);
+            cards.appendChild(card);
+          });
+
+          section.appendChild(cards);
+          container.appendChild(section);
+        });
+      }
+
+      const ageInMonths = calculateAgeInMonths(BABY_BIRTHDAY);
+      const currentMonthLabel = `${ageInMonths} months (${monthNameFromNumber(ageInMonths)})`;
+      document.getElementById("currentAge").innerHTML = `Baby S is currently <strong>${currentMonthLabel}</strong><small>Birthday: July 15, 2026 · Age is calculated automatically from today’s date</small>`;
+
+      const select = document.getElementById("futureMonth");
+      const months = [2, 3, 4, 5, 6, 7, 9, 12, 18, 24];
+
+      months.forEach((month) => {
+        const option = document.createElement("option");
+        option.value = String(month);
+        option.textContent = monthPlans[month]?.label || `${month} months`;
+        select.appendChild(option);
+      });
+
+      const defaultMonth = months.includes(ageInMonths) ? ageInMonths : 2;
+      select.value = String(defaultMonth);
+
+      const defaultPlan = monthPlans[defaultMonth] || monthPlans[2];
+      renderPlan(defaultPlan);
+      document.getElementById("ageBadge").textContent = defaultPlan.label;
+
+      document.getElementById("showMonthBtn").addEventListener("click", () => {
+        const selected = Number(select.value);
+        const plan = monthPlans[selected] || monthPlans[2];
+        renderPlan(plan);
+        document.getElementById("ageBadge").textContent = plan.label;
+      });
+    </script>
+  </body>
 </html>
